@@ -25,6 +25,13 @@ def proof_of_work(last_proof):
     print("Searching for next proof")
     proof = 0
     #  TODO: Your code here
+    # get previous_hash
+    previous_hash = f"{last_proof}".encode()
+    previous_hash = hashlib.sha256(previous_hash).hexdigest()
+
+    # keep searching until a proof is found
+    while valid_proof(previous_hash, proof) == False:
+        proof += 2
 
     print("Proof found: " + str(proof) + " in " + str(timer() - start))
     return proof
@@ -40,7 +47,12 @@ def valid_proof(last_hash, proof):
     """
 
     # TODO: Your code here!
-    pass
+    # create guess and guess_hash
+    guess = f"{proof}".encode()
+    guess_hash = hashlib.sha256(guess).hexdigest()
+    
+    # test if the first 6 numbers of the guess_hash match the last 6 numbers of last_hash
+    return guess_hash[:6] == last_hash[-6:]
 
 
 if __name__ == '__main__':
